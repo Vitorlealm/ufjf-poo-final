@@ -4,12 +4,17 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Teste!");
-        Usuario usuario = new Usuario();
-        JFrame s = new JFrame("Chat 555555555555555555");
-        s.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        s.setSize(400, 400);
-        s.setVisible(true);
-        usuario.teste();
+        String nome, email, senha, cpf, endereco;
+        Boolean admin;
+        nome = "Davi";
+        email = "davi.aires@estudante.ufjf.br";
+        senha = "123";
+        cpf = "000.000.000-44";
+        endereco = "R BvP";
+        admin = false;
+
+        Usuario user = new Usuario(nome, email, senha, cpf, endereco, admin);
+
+        System.out.println(user.getNome()+" mora em "+ user.getEndereco());
     }
 }
