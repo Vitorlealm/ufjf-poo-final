@@ -3,6 +3,7 @@ package org.example;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.example.exceptions.UsuarioNaoEncontradoException;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -16,29 +17,87 @@ public class Dados {
     public static List<Usuario> usuariosCadastrados = new ArrayList<>();
     private static List<Produto> produtosCadastrados = new ArrayList<>();
     public static List<Pedido> listaPedidos = new ArrayList<>();
-
     private static final String USUARIOS_JSON = "src/main/resources/usuarios.json";
     private static final String PEDIDOS_JSON = "src/main/resources/pedidos.json";
+    private static Usuario usuarioLogado;
 
+    private static Long idPedidos;
+
+    public static Usuario getUsuarioLogado() {
+        return usuarioLogado;
+    }
+
+    public static void setUsuarioLogado(Usuario usuarioLogado) {
+        Dados.usuarioLogado = usuarioLogado;
+    }
+
+    public static boolean login(String email, String senha){
+        for(Usuario usuario : Dados.usuariosCadastrados){
+            if(usuario.getEmail() ==  email){
+                if(usuario.getSenha() == senha){
+                    setUsuarioLogado(usuario);
+                    return true;
+                }
+            }
+        }
+        System.err.println("Usuario ou senha incorretos");
+        return false;
+    }
+
+    public static boolean logout(){
+        if (usuarioLogado != null){
+            usuarioLogado = null;
+            return true;
+        }
+        else{
+            System.out.println("Usuario logado nao encontrado");
+            return false;
+        }
+    }
 
     public static List<Usuario> getUsuariosCadastrados() {
         return usuariosCadastrados;
     }
 
-    public static List<Produto> getProdutosCadastrados() {
-        return produtosCadastrados;
+    public static void cadastrarUsuario(Usuario usuario){
+        for(Usuario u : Dados.usuariosCadastrados){
+            if(u.getEmail().equals(usuario.getEmail())){
+                System.out.println("Email já cadastrado: " + usuario.getEmail());
+                return;
+            }
+        }
+        Dados.usuariosCadastrados.add(usuario);
+        Dados.salvarEmDisco();
+        System.out.println("Usuario cadastrado com sucesso: " + usuario.getEmail());
+
     }
 
-    public static List<Pedido> getListaPedidos() {
-        return listaPedidos;
+    public static void cadastrarPedido(Pedido pedido){
+        for(Pedido p : Dados.listaPedidos){
+            if(p.getId().equals(pedido.getId())){
+                System.out.println("Pedido já cadastrado: " + p.getId());
+                return;
+            }
+        }
+        Dados.listaPedidos.add(pedido);
+        Dados.salvarEmDisco();
+        System.out.println("Pedido cadastrado com sucesso: " + pedido.getId());
+
     }
 
-    public static void setListaPedidos(List<Pedido> listaPedidos) {
-        Dados.listaPedidos = listaPedidos;
-    }
-
-    public static void setUsuariosCadastrados(List<Usuario> usuariosCadastrados) {
-        Dados.usuariosCadastrados = usuariosCadastrados;
+    public static boolean autenticaUsuario(String email, String senha) throws UsuarioNaoEncontradoException {
+        for(Usuario u : Dados.usuariosCadastrados){
+            if(u.getEmail().equalsIgnoreCase(email)){
+                if(u.getSenha().equals(senha)){
+                    Dados.usuarioLogado = u;
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        throw new UsuarioNaoEncontradoException();
     }
 
 
@@ -60,11 +119,43 @@ public class Dados {
     public static void atualizaMemoriaPrincipal(){
         String usuarioJson = readJsonFromFile(USUARIOS_JSON);
         System.out.println("JSON lido do arquivo Usuarios: " + usuarioJson);
-        Dados.usuariosCadastrados = mapJsonUsuario(usuarioJson);
+        if(usuarioJson.length() > 0) {
+            Dados.usuariosCadastrados = mapJsonUsuario(usuarioJson);
+        }
 
         String pedidosJson = readJsonFromFile(PEDIDOS_JSON);
         System.out.println("JSON lido do arquivo Pedidos: " + pedidosJson);
-        Dados.listaPedidos = mapJsonPedidos(pedidosJson);
+        if(pedidosJson.length() > 0) {
+            Dados.listaPedidos = mapJsonPedidos(pedidosJson);
+        }
+
+        Dados.idPedidos = 0L;
+        if(!Dados.listaPedidos.isEmpty()){
+            Long maiorId =  Dados.listaPedidos.get(0).getId();
+            for(Pedido pedido : Dados.listaPedidos){
+                if(pedido.getId() > maiorId){
+                    maiorId = pedido.getId();
+                }
+            }
+        }
+    }
+
+    public static List<Pedido> getPedidosUsuario(Usuario usuario){
+        List<Pedido> listaPedidos = new ArrayList<>();
+        for(Pedido p : Dados.listaPedidos){
+            if(p.getClienteEmail().equalsIgnoreCase(usuario.getEmail())){
+                listaPedidos.add(p);
+            }
+        }
+        return listaPedidos;
+    }
+
+    public static Long getIdPedidos(){
+        return Dados.idPedidos;
+    }
+
+    public static void incrementaIdPedidos(){
+        Dados.idPedidos += 1L;
     }
 
     private static String readJsonFromFile(String filename) {
