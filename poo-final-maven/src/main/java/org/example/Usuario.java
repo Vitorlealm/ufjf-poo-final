@@ -13,15 +13,39 @@ public class Usuario {
     private String senha;
     private String cpf;
     private String endereco;
+
+    private boolean ativo;
     private boolean admin;
 
-    public Usuario(String nome, String email, String senha, String cpf, String endereco, boolean admin) {
+    //Adicionar regras de negocio
+    public Usuario(String nome, String email, String senha, String cpf, String endereco, boolean ativo, boolean admin) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.cpf = cpf;
         this.endereco = endereco;
+        this.ativo = ativo;
         this.admin = admin;
+    }
+
+
+    public void editarUsuario(String nome, String cpf, String endereco){
+        for(int i = 0; i < Dados.usuariosCadastrados.size(); i++){
+            if (Dados.usuariosCadastrados.get(i).getEmail() == this.email){
+                Dados.usuariosCadastrados.get(i).setNome(nome);
+                Dados.usuariosCadastrados.get(i).setCpf(cpf);
+                Dados.usuariosCadastrados.get(i).setEndereco(endereco);
+
+            }
+        }
+    }
+
+    public void desativarUsuario(String email){
+        for(int i = 0; i < Dados.usuariosCadastrados.size(); i++){
+            if (Dados.usuariosCadastrados.get(i).getEmail() == this.email){
+                Dados.usuariosCadastrados.get(i).setAtivo(false);
+            }
+        }
     }
 
 
