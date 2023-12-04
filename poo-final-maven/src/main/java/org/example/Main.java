@@ -10,20 +10,11 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         //Carrega dados salvos nos JSONs
-        Dados.atualizaMemoriaPrincipal();
-        InterfaceGrafica tela = new InterfaceGrafica();
-        tela.incicializaTela();
-        Usuario usuarioteste = new Usuario("Vitor", "vmart@gmail.com", "123456", "1112121112", "rua A", true, true);
-        Dados.cadastrarUsuario(usuarioteste);
-        System.out.println(Dados.getUsuariosCadastrados());
+        Produto p1 = new Sorvete(Sorvete.Tamanho.GRANDE, Sorvete.Cobertura.CHOCOLATE);
+        System.out.println(p1+" "+p1.getValor());
 
-        List<Produto> listaPedidos = new ArrayList<>();
-        Sorvete sorvete = new Sorvete(Sorvete.Tamanho.MEDIO, Sorvete.Cobertura.CHOCOLATE);
-        listaPedidos.add(sorvete);
-        Pedido pedido = new Pedido(usuarioteste,listaPedidos);
-        Dados.cadastrarPedido(pedido);
-        Dados.salvarEmDisco();
-        System.out.println(Dados.listaPedidos);
+        Produto p2 = new Hamburguer(Hamburguer.Lanche.X_BACON);
+        System.out.println(p2+" "+p2.getValor());
 
     }
 }
