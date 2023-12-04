@@ -10,7 +10,6 @@ public class Sorvete extends Produto{
     private Tamanho tamanho;
     private Cobertura cobertura;
     public Sorvete(Tamanho tamanho, Cobertura cobertura) {
-        BigDecimal valorTotal = BigDecimal.valueOf(0);
         switch (tamanho){
             case PEQUENO:
                 this.setValor(BigDecimal.valueOf(5.90));

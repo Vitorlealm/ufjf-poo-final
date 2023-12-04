@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Data
 public class Hamburguer extends Produto{
-    public Lanche lanche;
+    private Lanche lanche;
 
     public Hamburguer(Lanche lanche){
         switch (lanche){
