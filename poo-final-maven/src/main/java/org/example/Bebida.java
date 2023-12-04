@@ -9,27 +9,26 @@ public class Bebida extends Produto{
     private Tamanho tamanho;
     private TipoBebida tipoBebida;
 
+    public BigDecimal calculaValor(double valor, double ajuste){
+        valor = valor*ajuste;
+        return BigDecimal.valueOf(valor);
+    }
+
     public BigDecimal defineValor(double valor, TipoBebida tipo){
         BigDecimal val;
         switch (tipo){
             case DRINK:
-                valor = valor*2;
-                val = BigDecimal.valueOf(valor);
+                val = calculaValor(valor, 2);
                 break;
             case REFRIGERANTE:
-                valor = valor*1.2;
-                val = BigDecimal.valueOf(valor);
-                break;
-            case AGUA:
-                val = BigDecimal.valueOf(valor);
+                val = calculaValor(valor, 1.2);
                 break;
             case CERVEJA:
-                valor = valor*1.5;
-                val = BigDecimal.valueOf(valor);
+                val = calculaValor(valor, 1.5);
                 break;
             default:
+                // Caso seja agua
                 val = BigDecimal.valueOf(valor);
-                break;
         }
         return val;
     }

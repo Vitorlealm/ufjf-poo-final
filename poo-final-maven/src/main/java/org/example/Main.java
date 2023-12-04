@@ -16,7 +16,7 @@ public class Main {
         Produto p2 = new Hamburguer(Hamburguer.Lanche.X_BACON);
         System.out.println(p2+" "+p2.getValor());
 
-        Produto p3 = new Bebida(Bebida.Tamanho.GRANDE, Bebida.TipoBebida.DRINK);
+        Produto p3 = new Bebida(Bebida.Tamanho.GRANDE, Bebida.TipoBebida.AGUA);
         System.out.println(p3+" "+p3.getValor());
 
     }
