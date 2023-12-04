@@ -48,7 +48,7 @@ public class Bebida extends Produto{
                 break;
 
         }
-        this.setNome("O LANCHE É UM: " + tipoBebida.name());
+        this.setNome("A bebida escolhida foi: " + tipoBebida.name());
         this.setTipo(Tipos.ACOMPANHAMENTO);
         this.tipoBebida = tipoBebida;
         this.tamanho = tamanho;
