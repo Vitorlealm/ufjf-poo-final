@@ -1,5 +1,4 @@
 package org.example;
-
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -20,7 +19,6 @@ public class Sorvete extends Produto{
             case GRANDE:
                 this.setValor(BigDecimal.valueOf(9.90));
                 break;
-
         }
         this.setNome("SORVETE DE " + cobertura.name());
         this.setTipo(Tipos.SOBREMESA);

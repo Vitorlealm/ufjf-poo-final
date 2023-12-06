@@ -19,5 +19,8 @@ public class Main {
         Produto p3 = new Bebida(Bebida.Tamanho.GRANDE, Bebida.TipoBebida.AGUA);
         System.out.println(p3+" "+p3.getValor());
 
+        Produto p4 = new Doce(Doce.Especificacao.TRUFA, Doce.Sabor.CARAMELO);
+        System.out.println(p4+" "+p4.getValor());
+
     }
 }

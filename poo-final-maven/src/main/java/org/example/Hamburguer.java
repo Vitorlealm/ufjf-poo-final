@@ -1,7 +1,5 @@
 package org.example;
-
 import lombok.Data;
-
 import java.math.BigDecimal;
 
 @Data
@@ -19,7 +17,6 @@ public class Hamburguer extends Produto{
             case ESPECIAL:
                 this.setValor(BigDecimal.valueOf(20));
                 break;
-
         }
         this.setNome("O LANCHE É UM: " + lanche.name());
         this.setTipo(Tipos.HAMBURGUER);
