@@ -12,6 +12,9 @@ import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import static org.example.Dados.getIdPedidos;
+import static org.example.Dados.salvarEmDisco;
+import org.example.produtos.Produto;
 
 public class Dados {
     public static List<Usuario> usuariosCadastrados = new ArrayList<>();
@@ -21,7 +24,7 @@ public class Dados {
     private static final String PEDIDOS_JSON = "src/main/resources/pedidos.json";
     private static Usuario usuarioLogado;
 
-    private static Long idPedidos;
+    private static Long idPedidos = getIdPedidos();
 
     public static Usuario getUsuarioLogado() {
         return usuarioLogado;
@@ -55,15 +58,23 @@ public class Dados {
         }
     }
 
+    private static void atualizarIdPedido(){
+        Long ultimoId = Dados.listaPedidos.stream()
+                .mapToLong(Pedido::getId)
+                .max()
+                .orElse(0);
+        idPedidos = ultimoId + 1L;
+    }
+
     public static List<Usuario> getUsuariosCadastrados() {
         return usuariosCadastrados;
     }
 
-    public static void cadastrarUsuario(Usuario usuario){
+    public static void cadastrarUsuario(Usuario usuario) throws Exception{
         for(Usuario u : Dados.usuariosCadastrados){
             if(u.getEmail().equals(usuario.getEmail())){
                 System.out.println("Email já cadastrado: " + usuario.getEmail());
-                return;
+                throw new UsuarioJaCadastradoException();
             }
         }
         Dados.usuariosCadastrados.add(usuario);
@@ -72,32 +83,41 @@ public class Dados {
 
     }
 
-    public static void cadastrarPedido(Pedido pedido){
-        for(Pedido p : Dados.listaPedidos){
-            if(p.getId().equals(pedido.getId())){
-                System.out.println("Pedido já cadastrado: " + p.getId());
-                return;
+    public static void excluirUsuario(Usuario u) {
+        for(int i=0; i < Dados.usuariosCadastrados.size(); i++){
+            if(Dados.usuariosCadastrados.get(i).getEmail().equalsIgnoreCase(u.getEmail())){
+                Dados.usuariosCadastrados.remove(i);
             }
         }
-        Dados.listaPedidos.add(pedido);
-        Dados.salvarEmDisco();
-        System.out.println("Pedido cadastrado com sucesso: " + pedido.getId());
-
+        salvarEmDisco();
     }
 
-    public static boolean autenticaUsuario(String email, String senha) throws UsuarioNaoEncontradoException {
+    public static void editarUsuario(String nome, String email, String senha, String endereco, String cpf, boolean admin) throws UsuarioNaoEncontradoException {
         for(Usuario u : Dados.usuariosCadastrados){
-            if(u.getEmail().equalsIgnoreCase(email)){
-                if(u.getSenha().equals(senha)){
-                    Dados.usuarioLogado = u;
-                    return true;
-                }
-                else{
-                    return false;
-                }
+            if(u.getCpf().equalsIgnoreCase(cpf)){
+                u.setNome(nome);
+                u.setEmail(email);
+                u.setSenha(senha);
+                u.setEndereco(endereco);
+                u.setAdmin(admin);
             }
         }
-        throw new UsuarioNaoEncontradoException();
+        if (cpf == null){
+            throw new UsuarioNaoEncontradoException();
+        }
+        salvarEmDisco();
+    }
+    public static Usuario buscaUsuario(String cpf) throws UsuarioNaoEncontradoException {
+        Usuario usuario = null;
+        for(int i=0; i < Dados.usuariosCadastrados.size(); i++){
+            if(Dados.usuariosCadastrados.get(i).getCpf() == cpf){
+                usuario = Dados.usuariosCadastrados.get(i);
+            }
+        }
+        if (usuario == null){
+            throw new UsuarioNaoEncontradoException();
+        }
+        return usuario;
     }
 
 
