@@ -1,6 +1,7 @@
 package org.example;
 
 import lombok.Data;
+import org.example.produtos.Produto;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -29,7 +30,7 @@ public class Pedido {
         Dados.incrementaIdPedidos();
         BigDecimal valor = new BigDecimal(0);
         for(Produto p : listaProdutos){
-           valor = valor.add(p.getValor());
+            valor = valor.add(p.getValor());
         }
         this.valorTotal = valor.setScale(2, RoundingMode.HALF_UP);
     }
@@ -40,6 +41,13 @@ public class Pedido {
                 .collect(Collectors.joining(", "));
 
         return nomesConcatenados;
+    }
+
+    @Override
+    public String toString() {
+        String stringProdutos;
+
+        return id + " | " + clienteEmail + " | Status: " + status ;
     }
 
     public void cancelarPedido(){

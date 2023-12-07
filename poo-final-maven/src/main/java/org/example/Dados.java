@@ -2,7 +2,9 @@ package org.example;
 
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import org.example.exceptions.UsuarioJaCadastradoException;
 import org.example.exceptions.UsuarioNaoEncontradoException;
 
 import java.io.BufferedReader;
@@ -10,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import static org.example.Dados.getIdPedidos;
@@ -120,6 +123,71 @@ public class Dados {
         return usuario;
     }
 
+    public static void editarPedido(Long id, String clienteEmail, String enderecoEntrega, BigDecimal valorTotal, String status){
+        for(Pedido p : Dados.listaPedidos){
+            if(p.getId() == id){
+                p.setClienteEmail(clienteEmail);
+                p.setEnderecoEntrega(enderecoEntrega);
+                p.setValorTotal(valorTotal);
+                p.setStatus(status);
+            }
+        }
+        salvarEmDisco();
+    }
+
+
+    public static void pedidoEntregue(Pedido p){
+        for(Pedido pedido : Dados.listaPedidos){
+            if(p.getId().equals(pedido.getId())){
+                if(pedido.getStatus() != "ENTREGUE"){
+                    pedido.setStatus("ENTREGUE");
+                }
+                else{
+                    pedido.setStatus("ANDAMENTO");
+                }
+            }
+        }
+        salvarEmDisco();
+    }
+
+    public static void cancelarPedido(Pedido p){
+        for(int i=0; i < Dados.listaPedidos.size(); i++){
+            if(Dados.listaPedidos.get(i).getId().equals(p.getId())){
+                Dados.listaPedidos.remove(i);
+            }
+        }
+        salvarEmDisco();
+    }
+
+    public static void cadastrarPedido(Pedido pedido){
+        //atualizarIdPedido();
+        for(Pedido p : Dados.listaPedidos){
+            if(p.getId().equals(pedido.getId())){
+                System.out.println("Pedido já cadastrado: " + p.getId());
+                return;
+            }
+        }
+        Dados.listaPedidos.add(pedido);
+        Dados.salvarEmDisco();
+        System.out.println("Pedido cadastrado com sucesso: " + pedido.getId());
+
+    }
+
+    public static boolean autenticaUsuario(String email, String senha) throws UsuarioNaoEncontradoException {
+        for(Usuario u : Dados.usuariosCadastrados){
+            if(u.getEmail().equalsIgnoreCase(email)){
+                if(u.getSenha().equals(senha)){
+                    Dados.usuarioLogado = u;
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        throw new UsuarioNaoEncontradoException();
+    }
+
 
     public static void salvarEmDisco(){
         Gson gson = new Gson();
@@ -129,8 +197,13 @@ public class Dados {
             System.err.println(ioException.getMessage());
         }
 
+        Gson gsonProdutos = new GsonBuilder()
+                .registerTypeAdapter(Produto.class,
+                        new PropertyBasedInterfaceMarshal())
+                .create();
+
         try (FileWriter writer = new FileWriter(PEDIDOS_JSON)){
-            writer.write(gson.toJson(Dados.listaPedidos));
+            writer.write(gsonProdutos.toJson(Dados.listaPedidos));
         }catch (IOException ioException){
             System.err.println(ioException.getMessage());
         }
@@ -157,6 +230,7 @@ public class Dados {
                     maiorId = pedido.getId();
                 }
             }
+            idPedidos = maiorId + 1L;
         }
     }
 
@@ -200,7 +274,11 @@ public class Dados {
     }
 
     private static List<Pedido> mapJsonPedidos(String json) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Produto.class,
+                        new PropertyBasedInterfaceMarshal())
+                .create();
         Type listType = new TypeToken<List<Pedido>>(){}.getType();
-        return new Gson().fromJson(json, listType);
+        return gson.fromJson(json, listType);
     }
 }

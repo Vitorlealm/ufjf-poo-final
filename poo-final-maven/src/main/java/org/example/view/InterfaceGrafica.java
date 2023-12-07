@@ -2,10 +2,12 @@ package org.example.view;
 
 import org.example.Dados;
 import org.example.Pedido;
-import org.example.Produto;
+import org.example.produtos.Produto;
 import org.example.exceptions.UsuarioNaoEncontradoException;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +20,11 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.example.Usuario;
+import org.example.produtos.Bebida;
+import org.example.produtos.Hamburguer;
 import org.example.produtos.Produto;
+import org.example.produtos.Sorvete;
+
 public class InterfaceGrafica extends JFrame {
 
     private JFrame tela;
@@ -563,15 +569,397 @@ public class InterfaceGrafica extends JFrame {
 
 
     //////////////////////////////
-    private List<String> criarListaDeObjetos() {
-        // Implemente a lógica para criar e retornar uma lista de objetos
-        // Este método é apenas um exemplo e pode ser substituído pela sua lógica específica
-        List<String> lista = new ArrayList<>();
-        lista.add("Objeto 1");
-        lista.add("Objeto 2");
-        lista.add("Objeto 3");
-        return lista;
+
+    public void desenhaTelaClientes() {
+        JPanel painel = new JPanel();
+        painel.setBorder(BorderFactory.createTitledBorder("Bem vindo ao Orientado a Xtudo!"));
+        painel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+
+        JTable tabelaPedidos = criarTabelaClientes();
+        tabelaPedidos.setPreferredSize(new Dimension(WIDTH -50, HEIGHT/2));
+        JScrollPane scrollPane = new JScrollPane(tabelaPedidos);
+        scrollPane.setPreferredSize(new Dimension(WIDTH -50, HEIGHT/2));
+        painel.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel painelBotoes = new JPanel();
+        JButton botao1 = new JButton("Iniciar novo pedido");
+        JButton botao2 = new JButton("Logout");
+
+        painelBotoes.add(botao1);
+        painelBotoes.add(botao2);
+        painel.add(painelBotoes, BorderLayout.SOUTH);
+
+        botao1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                desenhaTelaFazerPedido();
+            }
+        });
+
+        botao2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Dados.logout();
+                desenhaLogin();
+            }
+        });
+
+        tabelaPedidos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    // Obtém a linha selecionada
+                    int linhaSelecionada = tabelaPedidos.getSelectedRow();
+                    System.err.println(linhaSelecionada);
+                }
+            }
+        });
+
+        tela.getContentPane().removeAll();
+        tela.getContentPane().add(painel, BorderLayout.CENTER);
+        tela.revalidate();
+        tela.repaint();
+    }
+
+    public void desenhaTelaFazerPedido(){
+
+        JPanel painel = new JPanel();
+        painel.setBorder(BorderFactory.createTitledBorder("Faça seu pedido!"));
+        painel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+
+
+        JPanel painelContainer =  new JPanel();
+        painelContainer.setPreferredSize(new Dimension(WIDTH, 400));
+        painelContainer.setBorder(BorderFactory.createEtchedBorder());
+
+        painelContainer.setLayout(new BoxLayout(painelContainer, BoxLayout.X_AXIS));
+
+        //SORVETES E BEBIDAS
+        JPanel painelSorvetesBebidas = new JPanel();
+        painelSorvetesBebidas.setBorder(BorderFactory.createTitledBorder("Bebidas e sobremesas"));
+        painelSorvetesBebidas.setPreferredSize(new Dimension(WIDTH/3, 400));
+        painelSorvetesBebidas.setLayout(new BoxLayout(painelSorvetesBebidas, BoxLayout.Y_AXIS));
+
+        //BEBIDAS
+        JPanel painelBebidas = new JPanel();
+        painelBebidas.setBorder(BorderFactory.createTitledBorder("Bebidas"));
+        painelBebidas.setPreferredSize(new Dimension(WIDTH/3, 200));
+        painelBebidas.setLayout(new BoxLayout(painelBebidas, BoxLayout.Y_AXIS));
+
+        JLabel rotuloBebida = new JLabel("Selecione a bebida:");
+        JComboBox comboBoxBebida = new JComboBox<>(Bebida.bebidas);
+        comboBoxBebida.setMaximumSize(new Dimension( WIDTH/3, 25));
+
+        JLabel rotuloTamanhoBebida = new JLabel("Selecione o tamanho do seu copo: (ml)");
+        JComboBox comboBoxTamanhoBebida = new JComboBox<>(Bebida.copos);
+        comboBoxTamanhoBebida.setMaximumSize(new Dimension( WIDTH/3, 25));
+
+        JPanel painelBotaoBebidas = new JPanel();
+        painelBotaoBebidas.setPreferredSize(new Dimension(WIDTH/3, 50));
+        painelBotaoBebidas.setLayout(new BoxLayout(painelBotaoBebidas, BoxLayout.X_AXIS));
+
+        JButton botaoPrecoBebida = new JButton("Valor");
+        JButton botaoIncluirBebida = new JButton("Adicionar bebida");
+
+        painelBotaoBebidas.add(botaoPrecoBebida);
+        painelBotaoBebidas.add(botaoIncluirBebida);
+
+        painelBebidas.add(rotuloBebida);
+        painelBebidas.add(comboBoxBebida);
+        painelBebidas.add(rotuloTamanhoBebida);
+        painelBebidas.add(comboBoxTamanhoBebida);
+        painelBebidas.add(painelBotaoBebidas);
+
+        botaoPrecoBebida.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Bebida bebida = new Bebida(
+                        comboBoxBebida.getSelectedItem().toString(),
+                        comboBoxTamanhoBebida.getSelectedItem().toString()
+                );
+                JOptionPane.showMessageDialog(tela, "R$" + bebida.calcularValorItem());
+            }
+        });
+        botaoIncluirBebida.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Bebida bebida = new Bebida(
+                        comboBoxBebida.getSelectedItem().toString(),
+                        comboBoxTamanhoBebida.getSelectedItem().toString()
+                );
+                bebida.setValor(bebida.calcularValorItem());
+                listaProdutosAux.add(bebida);
+                desenhaTelaFazerPedido();
+            }
+        });
+
+        //Sorvete
+        JPanel painelSorvete = new JPanel();
+
+        painelSorvete.setLayout(new BoxLayout(painelSorvete, BoxLayout.Y_AXIS));
+        painelSorvete.setPreferredSize(new Dimension(WIDTH/3, 200));
+        painelSorvete.setBorder(BorderFactory.createTitledBorder("Sorvetes"));
+
+
+        JLabel rotuloTamanho = new JLabel("Selecione o tamanho:");
+        JComboBox comboBoxTamanho = new JComboBox<>(Sorvete.tamanhos);
+        comboBoxTamanho.setMaximumSize(new Dimension( WIDTH/3, 25));
+
+        JLabel rotuloCobertura = new JLabel("Selecione a cobertura:");
+        JComboBox comboBoxCobertura = new JComboBox<>(Sorvete.coberturas);
+        comboBoxCobertura.setMaximumSize(new Dimension( WIDTH/3, 25));
+
+        JPanel painelBotaoSorvete = new JPanel();
+        painelBotaoSorvete.setLayout(new BoxLayout(painelBotaoSorvete, BoxLayout.X_AXIS));
+        painelBotaoSorvete.setPreferredSize(new Dimension(WIDTH/3, 50));
+
+        JButton botaoPreco = new JButton("Valor");
+        JButton botaoIncluirSorvete = new JButton("Adicionar sobremesa");
+
+        painelBotaoSorvete.add(botaoPreco);
+        painelBotaoSorvete.add(botaoIncluirSorvete);
+
+
+        painelSorvete.add(rotuloTamanho);
+        painelSorvete.add(comboBoxTamanho);
+        painelSorvete.add(rotuloCobertura);
+        painelSorvete.add(comboBoxCobertura);
+        painelSorvete.add(painelBotaoSorvete);
+
+        botaoPreco.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Sorvete sorvete = new Sorvete(
+                        comboBoxTamanho.getSelectedItem().toString(),
+                        comboBoxCobertura.getSelectedItem().toString()
+                );
+                JOptionPane.showMessageDialog(tela, "R$" + sorvete.calcularValorItem());
+            }
+        });
+        botaoIncluirSorvete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Sorvete sorvete = new Sorvete(
+                        comboBoxTamanho.getSelectedItem().toString(),
+                        comboBoxCobertura.getSelectedItem().toString()
+                );
+                sorvete.setValor(sorvete.calcularValorItem());
+
+                listaProdutosAux.add(sorvete);
+                desenhaTelaFazerPedido();
+            }
+
+        });
+        painelSorvetesBebidas.add(painelBebidas, BorderLayout.CENTER);
+        painelSorvetesBebidas.add(painelSorvete, BorderLayout.CENTER);
+
+
+        //HAMBURGUER
+        JPanel painelHamburguer = new JPanel();
+        painelHamburguer.setLayout(new BoxLayout(painelHamburguer, BoxLayout.Y_AXIS));
+        painelHamburguer.setPreferredSize(new Dimension(WIDTH/3, 400));
+        painelHamburguer.setMaximumSize(new Dimension(WIDTH/3, 400));
+
+        JLabel rotuloSaladas = new JLabel("Quantas porções de salada?");
+        JSpinner spinnerSaladas = new JSpinner();
+        spinnerSaladas.setValue(0);
+        spinnerSaladas.setMaximumSize(new Dimension( WIDTH/3, 25));
+
+        JLabel rotuloCarnes = new JLabel("Quantas carnes?");
+        JSpinner spinnerCarnes = new JSpinner();
+        spinnerCarnes.setValue(0);
+        spinnerCarnes.setMaximumSize(new Dimension( WIDTH/3, 25));
+
+        JLabel rotuloQueijos = new JLabel("Quantas porções de queijo?");
+        JSpinner spinnerQueijos = new JSpinner();
+        spinnerQueijos.setValue(0);
+        spinnerQueijos.setMaximumSize(new Dimension( WIDTH/3, 25));
+
+        JLabel rotuloPresunto = new JLabel("Quantas porções de Presunto?");
+        JSpinner spinnerPresunto = new JSpinner();
+        spinnerPresunto.setValue(0);
+        spinnerPresunto.setMaximumSize(new Dimension( WIDTH/3, 25));
+
+        JLabel rotuloBacon = new JLabel("Quantas porções de Bacon?");
+        JSpinner spinnerBacon = new JSpinner();
+        spinnerBacon.setValue(0);
+        spinnerBacon.setMaximumSize(new Dimension( WIDTH/3, 25));
+
+        JLabel rotuloOvos = new JLabel("Quantos ovos?");
+        JSpinner spinnerOvos = new JSpinner();
+        spinnerOvos.setValue(0);
+        spinnerOvos.setMaximumSize(new Dimension( WIDTH/3, 25));
+
+        JPanel painelBotaoHamburguer = new JPanel();
+        painelBotaoHamburguer.setLayout(new BoxLayout(painelBotaoHamburguer, BoxLayout.X_AXIS));
+        painelBotaoHamburguer.setPreferredSize(new Dimension(WIDTH/3, 50));
+
+        JButton botaoPrecosHamburguer = new JButton("Valor");
+        JButton botaoIncluirHamburguer = new JButton("Adicionar hamburguer");
+
+        painelBotaoHamburguer.add(botaoPrecosHamburguer);
+        painelBotaoHamburguer.add(botaoIncluirHamburguer);
+
+        painelHamburguer.add(rotuloSaladas);
+        painelHamburguer.add(spinnerSaladas);
+        painelHamburguer.add(rotuloCarnes);
+        painelHamburguer.add(spinnerCarnes);
+        painelHamburguer.add(rotuloQueijos);
+        painelHamburguer.add(spinnerQueijos);
+        painelHamburguer.add(rotuloPresunto);
+        painelHamburguer.add(spinnerPresunto);
+        painelHamburguer.add(rotuloBacon);
+        painelHamburguer.add(spinnerBacon);
+        painelHamburguer.add(rotuloOvos);
+        painelHamburguer.add(spinnerOvos);
+        painelHamburguer.add(painelBotaoHamburguer);
+
+        botaoPrecosHamburguer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Hamburguer hamburguer = new Hamburguer(
+                        (int) spinnerSaladas.getValue(),
+                        (int) spinnerCarnes.getValue(),
+                        (int) spinnerQueijos.getValue(),
+                        (int) spinnerPresunto.getValue(),
+                        (int) spinnerBacon.getValue(),
+                        (int) spinnerOvos.getValue()
+                );
+                JOptionPane.showMessageDialog(tela, "valor: R$" + hamburguer.calcularValorItem());
+
+            }
+        });
+        botaoIncluirHamburguer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Hamburguer hamburguer = new Hamburguer(
+                        (int) spinnerSaladas.getValue(),
+                        (int) spinnerCarnes.getValue(),
+                        (int) spinnerQueijos.getValue(),
+                        (int) spinnerPresunto.getValue(),
+                        (int) spinnerBacon.getValue(),
+                        (int) spinnerOvos.getValue()
+                );
+                hamburguer.setValor(hamburguer.calcularValorItem());
+                listaProdutosAux.add(hamburguer);
+                desenhaTelaFazerPedido();
+            }
+        });
+
+        //Lista de itens do pedido
+
+        JPanel painelItensPedido = new JPanel();
+        painelItensPedido.setLayout(new BoxLayout(painelItensPedido, BoxLayout.Y_AXIS));
+        painelItensPedido.setPreferredSize(new Dimension(WIDTH/3, 400));
+        painelItensPedido.setMaximumSize(new Dimension(WIDTH/3, 400));
+
+
+        DefaultListModel<Produto> listModel = new DefaultListModel<>();
+        if(listaProdutosAux.size() > 0) {
+            for (Produto p : listaProdutosAux) {
+                listModel.addElement(p);
+            }
+        }
+
+        JList listaPedidos = new JList<>(listModel);
+        listaPedidos.setPreferredSize(new Dimension(WIDTH/3, 350));
+        JPanel painelBotoes = new JPanel();
+        painelBotoes.setLayout(new BoxLayout(painelBotoes, BoxLayout.X_AXIS));
+        painelBotoes.setPreferredSize(new Dimension(WIDTH/3, 25));
+        JButton botaoRemoverItem = new JButton("Remover item");
+        botaoRemoverItem.setPreferredSize(new Dimension(200, 25));
+        painelBotoes.add(botaoRemoverItem, BorderLayout.WEST);
+
+        botaoRemoverItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(produtoAux != null) {
+                    for(Produto p : listaProdutosAux){
+                        if(produtoAux.equals(p)){
+                            listaProdutosAux.remove(p);
+                            desenhaTelaFazerPedido();
+                        }
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(tela, "Selecione um pedido para remover");
+                }
+            }
+        });
+
+        painelItensPedido.add(new JScrollPane(listaPedidos), BorderLayout.CENTER);
+        painelItensPedido.add(painelBotoes, BorderLayout.SOUTH);
+        listaPedidos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                JList<?> list = (JList<?>) evt.getSource();
+                if (evt.getClickCount() == 1) {
+                    int index = list.locationToIndex(evt.getPoint());
+                    Produto produtoSelecionado = listModel.getElementAt(index);
+                    selecionaProduto(produtoSelecionado);
+                }
+            }
+        });
+
+        JPanel painelBotoesSubmit = new JPanel();
+        painelBotoesSubmit.setLayout(new BoxLayout(painelBotoesSubmit, BoxLayout.X_AXIS));
+        painelBotoesSubmit.setPreferredSize(new Dimension(WIDTH, 50));
+        painelBotoesSubmit.setMaximumSize(new Dimension(WIDTH, 50));
+        JButton botaoFazerPedido = new JButton("Fazer pedido");
+        JButton botaoVoltar = new JButton("Voltar");
+
+        botaoFazerPedido.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!listaProdutosAux.isEmpty()) {
+                    Dados.cadastrarPedido(new Pedido(Dados.getUsuarioLogado(), listaProdutosAux));
+                    desenhaTelaClientes();
+                }else{
+                    JOptionPane.showMessageDialog(tela, "Adicione ao menos um item ao carrinho.");
+                }
+            }
+        });
+
+        botaoVoltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                desenhaTelaClientes();
+            }
+        });
+
+        painelBotoesSubmit.add(botaoFazerPedido, BorderLayout.CENTER);
+        painelBotoesSubmit.add(botaoVoltar, BorderLayout.CENTER);
+
+
+        painelContainer.add(painelSorvetesBebidas, BorderLayout.CENTER);
+        painelContainer.add(painelHamburguer, BorderLayout.CENTER);
+        painelContainer.add(painelItensPedido, BorderLayout.CENTER);
+
+        painel.add(painelContainer, BorderLayout.CENTER);
+        painel.add(painelBotoesSubmit, BorderLayout.CENTER);
+
+
+        tela.getContentPane().removeAll();
+        tela.getContentPane().add(painel, BorderLayout.CENTER);
+        tela.revalidate();
+        tela.repaint();
+    }
+
+
+    private JTable criarTabelaClientes() {
+        List<Pedido> listaPedidos = Dados.getPedidosUsuario(Dados.getUsuarioLogado());
+        String[] colunas = {"Numero do pedido", "Produtos", "Valor Total", "Endereço", "Data de criação", "Status"};
+        Object[][] dados = new Object[listaPedidos.size()][6];
+        for (int i = 0; i < listaPedidos.size(); i++) {
+            dados[i][0] = listaPedidos.get(i).getId();
+            dados[i][1] = listaPedidos.get(i).concatenaNomeProdutos();
+            dados[i][2] = listaPedidos.get(i).getValorTotal();
+            dados[i][3] = listaPedidos.get(i).getEnderecoEntrega();
+            dados[i][4] = listaPedidos.get(i).getDataCriacao();
+            dados[i][5] = listaPedidos.get(i).getStatus();
+        }
+        JTable tabela = new JTable(dados, colunas);
+        return tabela;
     }
 
 }
-
