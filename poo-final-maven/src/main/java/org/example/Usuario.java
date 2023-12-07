@@ -18,14 +18,14 @@ public class Usuario {
     private boolean admin;
 
     //Adicionar regras de negocio
-    public Usuario(String nome, String email, String senha, String cpf, String endereco, boolean ativo, boolean admin) {
+    public Usuario(String nome, String email, String senha, String cpf, String endereco) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.cpf = cpf;
         this.endereco = endereco;
-        this.ativo = ativo;
-        this.admin = admin;
+        this.ativo = true;
+        this.admin = false;
     }
 
 
@@ -59,12 +59,8 @@ public class Usuario {
         }
     }
 
-    public void teste(){
-        JFrame frame = new JFrame("Chat Frame");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
-        JButton button = new JButton("AAAAAAA");
-        frame.add(button);
-        frame.setVisible(true);
+    @Override
+    public String toString() {
+        return nome;
     }
 }
