@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class InterfaceGrafica extends JFrame {
 
     private JFrame tela;
@@ -125,18 +124,19 @@ public class InterfaceGrafica extends JFrame {
         tela.repaint();
     }
 
+
     public void desenhaTelaFazerPedido(){
         JPanel painel = new JPanel();
         painel.setBorder(BorderFactory.createTitledBorder("Faça seu pedido!"));
         painel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         JLabel rotuloTipoPedido = new JLabel("Selecione um tipo de alimento:");
-        JComboBox comboBox = new JComboBox<>(Produto.getTiposPedido());
+        JComboBox comboBox = new JComboBox<>(Produto.tipos);
         comboBox.setPreferredSize(new Dimension(WIDTH/2, 25));
         JButton botaoFazerPedido = new JButton("Fazer pedido.");
 
         JLabel a = new JLabel("Selecione um tipo de alimento:");
-        JComboBox b = new JComboBox<>(Produto.getTiposPedido());
+        JComboBox b = new JComboBox<>(Produto.tipos);
         JButton c = new JButton("Fazer pedido.");
 
 
