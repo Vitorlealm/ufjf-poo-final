@@ -190,6 +190,8 @@ public class InterfaceGrafica extends JFrame {
             @Override
             public void actionPerformed(ActionEvent event) {
                 try{
+                    if (campoNome.getText().equals("") || campoEmail.getText().equals("") || campoSenha.getText().equals("") || campoCPF.getText().equals("")|| campoEndereco.getText().equals(""))
+                        throw new Exception("Algum campo obrigatorio nao está preenchido, preencha!");
                     Dados.cadastrarUsuario(new Usuario(
                             campoNome.getText(),
                             campoEmail.getText(),
