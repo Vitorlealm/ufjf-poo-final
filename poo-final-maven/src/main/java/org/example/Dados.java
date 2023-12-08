@@ -4,6 +4,7 @@ package org.example;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.example.exceptions.UsuarioNaoEncontradoException;
+import org.example.produtos.Produto;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -12,6 +13,7 @@ import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Dados {
     public static List<Usuario> usuariosCadastrados = new ArrayList<>();

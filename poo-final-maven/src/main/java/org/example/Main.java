@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.produtos.Produto;
+import org.example.produtos.Sorvete;
 import org.example.view.InterfaceGrafica;
 
 import javax.swing.*;
@@ -17,10 +19,10 @@ public class Main {
         Dados.cadastrarUsuario(usuarioteste);
         System.out.println(Dados.getUsuariosCadastrados());
 
-        List<Produto> listaPedidos = new ArrayList<>();
-        Sorvete sorvete = new Sorvete(Sorvete.Tamanho.MEDIO, Sorvete.Cobertura.CHOCOLATE);
-        listaPedidos.add(sorvete);
-        Pedido pedido = new Pedido(usuarioteste,listaPedidos);
+        List<Produto> listaProdutos = new ArrayList<>();
+        Sorvete sorvete = new Sorvete(Sorvete.tamanhos[0], Sorvete.coberturas[1]);
+        listaProdutos.add(sorvete);
+        Pedido pedido = new Pedido(usuarioteste,listaProdutos);
         Dados.cadastrarPedido(pedido);
         Dados.salvarEmDisco();
         System.out.println(Dados.listaPedidos);

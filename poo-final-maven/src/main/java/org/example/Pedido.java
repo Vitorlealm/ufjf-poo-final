@@ -1,6 +1,7 @@
 package org.example;
 
 import lombok.Data;
+import org.example.produtos.Produto;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

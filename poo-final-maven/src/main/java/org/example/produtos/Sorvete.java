@@ -10,6 +10,7 @@ public class Sorvete extends Produto {
 
     private String tamanho;
     private String cobertura;
+    
     public Sorvete(String tamanho, String cobertura) {
         this.setNome("SORVETE " + cobertura + " " + tamanho);
         this.setTipo("SOBREMESA");

@@ -1,8 +1,9 @@
 package org.example.view;
 
+import lombok.Data;
 import org.example.Dados;
 import org.example.Pedido;
-import org.example.Produto;
+import org.example.produtos.Produto;
 import org.example.exceptions.UsuarioNaoEncontradoException;
 
 import javax.swing.*;
@@ -11,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
+
 public class InterfaceGrafica extends JFrame {
 
     private JFrame tela;
