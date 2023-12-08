@@ -28,7 +28,7 @@ import org.example.produtos.Sorvete;
 public class InterfaceGrafica extends JFrame {
 
     private JFrame tela;
-    private final int WIDTH = 1000;
+    private final int WIDTH = 1050;
     private final int HEIGHT = 500;
     private Usuario usuarioAux;
     private Pedido pedidoAux;
@@ -438,13 +438,15 @@ public class InterfaceGrafica extends JFrame {
             JButton botaoVisualizar = new JButton("Visualizar pedido");
             JButton botaoMarcarEntregue = new JButton("Pedido entregue");
             JButton botaoCancelarPedido = new JButton("Cancelar pedido");
-            botaoVisualizar.setPreferredSize(new Dimension(150, 25));
-            botaoMarcarEntregue.setPreferredSize(new Dimension(150, 25));
-            botaoCancelarPedido.setPreferredSize(new Dimension(150, 25));
+            JButton botaoLimparPedidos = new JButton("X");
+            botaoVisualizar.setPreferredSize(new Dimension(140, 25));
+            botaoMarcarEntregue.setPreferredSize(new Dimension(140, 25));
+            botaoCancelarPedido.setPreferredSize(new Dimension(140, 25));
+            botaoLimparPedidos.setPreferredSize(new Dimension(50,25));
             painelBotoes.add(botaoVisualizar, BorderLayout.WEST);
             painelBotoes.add(botaoCancelarPedido, BorderLayout.WEST);
             painelBotoes.add(botaoMarcarEntregue, BorderLayout.WEST);
-
+            painelBotoes.add(botaoLimparPedidos, BorderLayout.WEST);
 
         botaoVisualizar.addActionListener(new ActionListener() {
             @Override
@@ -475,6 +477,19 @@ public class InterfaceGrafica extends JFrame {
                     desenhaTelaAdmin();
                 }else{
                     JOptionPane.showMessageDialog(tela, "Selecione um pedido");
+                }
+            }
+        });
+
+        botaoLimparPedidos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int choice = JOptionPane.showConfirmDialog(null,
+                        "Tem certeza de que deseja excluir todos os pedidos?",
+                        "Confirmação de Exclusão", JOptionPane.YES_NO_OPTION);
+                if (choice == JOptionPane.YES_OPTION) {
+                    Dados.limparPedidos();
+                    desenhaTelaAdmin();
                 }
             }
         });
