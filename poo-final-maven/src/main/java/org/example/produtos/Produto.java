@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public abstract class Produto {
     private String nome;
     private BigDecimal valor;
-
+    public static String[] tipos = new String[]{"HAMBURGUER", "ACOMPANHAMENTO", "SOBREMESA"};
     String tipo;
 
     public Produto() {
@@ -19,6 +19,4 @@ public abstract class Produto {
     public abstract BigDecimal calcularValorItem();
 
 
-
-    public static String[] tipos = new String[]{"HAMBURGUER", "ACOMPANHAMENTO", "SOBREMESA"};
 }

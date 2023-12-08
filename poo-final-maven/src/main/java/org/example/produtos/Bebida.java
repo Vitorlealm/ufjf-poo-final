@@ -6,8 +6,9 @@ import java.math.RoundingMode;
 public class Bebida extends Produto{
 
     private int tamanhoMl;
-
     private String bebida;
+    public static final String[] bebidas = new String[]{"COCA-COLA", "ABACATINHO", "GUARANA", "SPRITE", "AGUA", "CERVEJA"};
+    public static final String[] copos = new String[]{"350", "600", "1000"};
 
     public Bebida(String bebida, String tamanhoMl) {
         this.setNome(bebida + " " + tamanhoMl + " ML");
@@ -35,8 +36,5 @@ public class Bebida extends Produto{
         return BigDecimal.valueOf(valorTotal).setScale(2, RoundingMode.HALF_UP);
 
     }
-
-    public static final String[] bebidas = new String[]{"COCA-COLA", "ABACATINHO", "GUARANA", "SPRITE", "AGUA", "CERVEJA"};
-    public static final String[] copos = new String[]{"350", "600", "1000"};
 
 }

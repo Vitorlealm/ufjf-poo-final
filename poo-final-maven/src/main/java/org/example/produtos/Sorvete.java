@@ -10,6 +10,9 @@ public class Sorvete extends Produto {
 
     private String tamanho;
     private String cobertura;
+    public static String[] coberturas = new String[]{"MORANGO", "CHOCOLATE", "BAUNILHA"};
+    public static String[] tamanhos = new String[]{"PEQUENO", "MEDIO", "GRANDE"};
+
     public Sorvete(String tamanho, String cobertura) {
         this.setNome("SORVETE " + cobertura + " " + tamanho);
         this.setTipo("SOBREMESA");
@@ -36,11 +39,5 @@ public class Sorvete extends Produto {
         }
         return valorTotal.setScale(2, RoundingMode.HALF_UP);
     }
-
-
-
-    public static String[] coberturas = new String[]{"MORANGO", "CHOCOLATE", "BAUNILHA"};
-
-    public static String[] tamanhos = new String[]{"PEQUENO", "MEDIO", "GRANDE"};
 
 }
