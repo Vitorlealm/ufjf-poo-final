@@ -126,6 +126,14 @@ public class InterfaceGrafica extends JFrame {
                 System.out.println("Senha: " + senha);
 
                 try {
+                    if (email.equals(""))
+                        if (senha.equals(""))
+                            throw new Exception("Digite seu e-mail e sua senha!");
+                        else
+                            throw new Exception("Digite seu e-mail");
+                    if (senha.equals(""))
+                        throw new Exception("Digite sua senha!");
+
                     if(Dados.autenticaUsuario(email, senha)){
                        if(Dados.getUsuarioLogado().isAdmin()){
                            desenhaTelaAdmin();
@@ -140,6 +148,8 @@ public class InterfaceGrafica extends JFrame {
                 } catch (UsuarioNaoEncontradoException ex) {
                     JOptionPane.showMessageDialog(tela, ex.getMessage());
 
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(tela, ex.getMessage());
                 }
             }
         });
