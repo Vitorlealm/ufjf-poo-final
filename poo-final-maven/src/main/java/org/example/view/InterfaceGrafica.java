@@ -202,6 +202,13 @@ public class InterfaceGrafica extends JFrame {
                 try{
                     if (campoNome.getText().equals("") || campoEmail.getText().equals("") || campoSenha.getText().equals("") || campoCPF.getText().equals("")|| campoEndereco.getText().equals(""))
                         throw new Exception("Algum campo obrigatorio nao está preenchido, preencha!");
+                    
+                    if(!Usuario.validarEmail(campoEmail.getText()))
+                        throw new Exception("Email Inválido");
+                    
+                    if(!Usuario.validarCPF(campoCPF.getText()))
+                        throw new Exception("CPF Inválido");
+                    
                     Dados.cadastrarUsuario(new Usuario(
                             campoNome.getText(),
                             campoEmail.getText(),
@@ -209,6 +216,7 @@ public class InterfaceGrafica extends JFrame {
                             campoCPF.getText(),
                             campoEndereco.getText()
                     ));
+                    
                     JOptionPane.showMessageDialog(tela, "Usuario cadastrado com sucesso!");
                 }
                 catch (Exception e){
