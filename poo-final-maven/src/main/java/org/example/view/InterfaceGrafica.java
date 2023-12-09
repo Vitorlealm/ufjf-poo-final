@@ -163,6 +163,13 @@ public class InterfaceGrafica extends JFrame {
         });
     }
 
+    public void limparCarrinho(){
+        for(int i = listaProdutosAux.size()-1; i >= 0; i--){
+            listaProdutosAux.remove(i);
+        }
+        System.out.println("Carrinho limpo!");
+    }
+
     public void desenhaCadastroUsuario(){
         JPanel painel = new JPanel();
         painel.setBorder(BorderFactory.createTitledBorder("Cadastro de Usuario"));
@@ -272,6 +279,7 @@ public class InterfaceGrafica extends JFrame {
         botaoIniciarPedido.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                limparCarrinho();
                 desenhaTelaFazerPedido();
             }
         });
@@ -284,6 +292,8 @@ public class InterfaceGrafica extends JFrame {
                desenhaLogin();
             }
         });
+
+
 
         painel.add(desenhaListaUsuarios(), BorderLayout.WEST);
         painel.add(desenhaPainelPedidos(), BorderLayout.EAST);
@@ -648,6 +658,7 @@ public class InterfaceGrafica extends JFrame {
         botao1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                limparCarrinho();
                 desenhaTelaFazerPedido();
             }
         });
@@ -989,9 +1000,10 @@ public class InterfaceGrafica extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if(!listaProdutosAux.isEmpty()) {
                     Dados.cadastrarPedido(new Pedido(Dados.getUsuarioLogado(), listaProdutosAux));
-                    JOptionPane.showMessageDialog(tela, "Pedido feito por usuário Admin, vá até o pedido e edite o endereço");
-                    if(Dados.getUsuarioLogado().isAdmin())
+                    if(Dados.getUsuarioLogado().isAdmin()){
+                        JOptionPane.showMessageDialog(tela, "Pedido feito por usuário Admin, vá até o pedido e edite o endereço");
                         desenhaTelaAdmin();
+                    }
                     else{
                         desenhaTelaClientes();
                     }
