@@ -39,5 +39,12 @@ public class Sorvete extends Produto {
         }
         return valorTotal.setScale(2, RoundingMode.HALF_UP);
     }
-
+    
+    @Override
+    public String toString() {
+        return "Sorvete | " +
+                "Tamanho: " + tamanho + 
+                " Cobertura: " + cobertura;
+    }
+    
 }

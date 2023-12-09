@@ -16,13 +16,13 @@ public class Hamburguer extends Produto{
     private int ovo;
 
     public Hamburguer(int salada, int carne, int queijo, int presunto, int bacon, int ovo) {
-        this.setNome("HAMB: "+
-            salada + "S " +
-            carne + "C " +
-            queijo + "Q " +
-            presunto + "P " +
-            bacon + "B " +
-            ovo + "O"
+            this.setNome("Hamburguer: "+
+            salada + " Salada " +
+            carne + " Carne " +
+            queijo + " Queijo " +
+            presunto + " Presunto " +
+            bacon + " Bacon " +
+            ovo + " Ovo"
         );
         this.setTipo("HAMBURGUER");
         this.salada = salada;
@@ -44,5 +44,17 @@ public class Hamburguer extends Produto{
         valorTotal = valorTotal + (this.ovo * 1.00);
         return BigDecimal.valueOf(valorTotal).setScale(2, RoundingMode.HALF_UP);
 
+    }
+    
+    @Override
+    public String toString() {
+        return "Hamburguer | " +
+                "Salada: " + salada + 
+                ", Carne: " + carne +
+                ", Queijo: " + queijo +
+                ", Presunto: " + presunto +
+                ", Bacon: " + bacon +
+                ", Ovo: " + ovo +
+                '}';
     }
 }
