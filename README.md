@@ -26,3 +26,7 @@ Este programa deve ser utilizado para o próprio cliente realizar seu pedido e e
    ```bash
    git clone https://github.com/Vitorlealm/ufjf-poo-final.git
    ```
+3. **Usuario administrador padrão**
+  - email: admin@admin.com
+  - senha: admin
+  - Apenas usuarios adminstradores podem excluir ou promover outros usuarios a administrador.
