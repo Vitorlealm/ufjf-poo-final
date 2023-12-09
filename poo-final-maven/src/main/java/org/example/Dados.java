@@ -159,6 +159,13 @@ public class Dados {
         salvarEmDisco();
     }
 
+    public static void limparPedidos(){
+        for(int i = Dados.listaPedidos.size()-1; i >= 0; i--){
+            Dados.listaPedidos.remove(i);
+        }
+        salvarEmDisco();
+    }
+
     public static void cadastrarPedido(Pedido pedido){
         //atualizarIdPedido();
         for(Pedido p : Dados.listaPedidos){

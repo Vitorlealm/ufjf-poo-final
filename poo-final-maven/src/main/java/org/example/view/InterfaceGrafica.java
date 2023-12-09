@@ -28,7 +28,7 @@ import org.example.produtos.Sorvete;
 public class InterfaceGrafica extends JFrame {
 
     private JFrame tela;
-    private final int WIDTH = 1000;
+    private final int WIDTH = 1050;
     private final int HEIGHT = 500;
     private Usuario usuarioAux;
     private Pedido pedidoAux;
@@ -126,6 +126,14 @@ public class InterfaceGrafica extends JFrame {
                 System.out.println("Senha: " + senha);
 
                 try {
+                    if (email.equals(""))
+                        if (senha.equals(""))
+                            throw new Exception("Digite seu e-mail e sua senha!");
+                        else
+                            throw new Exception("Digite seu e-mail");
+                    if (senha.equals(""))
+                        throw new Exception("Digite sua senha!");
+
                     if(Dados.autenticaUsuario(email, senha)){
                        if(Dados.getUsuarioLogado().isAdmin()){
                            desenhaTelaAdmin();
@@ -140,6 +148,8 @@ public class InterfaceGrafica extends JFrame {
                 } catch (UsuarioNaoEncontradoException ex) {
                     JOptionPane.showMessageDialog(tela, ex.getMessage());
 
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(tela, ex.getMessage());
                 }
             }
         });
@@ -190,6 +200,8 @@ public class InterfaceGrafica extends JFrame {
             @Override
             public void actionPerformed(ActionEvent event) {
                 try{
+                    if (campoNome.getText().equals("") || campoEmail.getText().equals("") || campoSenha.getText().equals("") || campoCPF.getText().equals("")|| campoEndereco.getText().equals(""))
+                        throw new Exception("Algum campo obrigatorio nao está preenchido, preencha!");
                     Dados.cadastrarUsuario(new Usuario(
                             campoNome.getText(),
                             campoEmail.getText(),
@@ -426,13 +438,16 @@ public class InterfaceGrafica extends JFrame {
             JButton botaoVisualizar = new JButton("Visualizar pedido");
             JButton botaoMarcarEntregue = new JButton("Pedido entregue");
             JButton botaoCancelarPedido = new JButton("Cancelar pedido");
-            botaoVisualizar.setPreferredSize(new Dimension(150, 25));
-            botaoMarcarEntregue.setPreferredSize(new Dimension(150, 25));
-            botaoCancelarPedido.setPreferredSize(new Dimension(150, 25));
+            JButton botaoLimparPedidos = new JButton("X");
+            botaoLimparPedidos.setBackground(Color.RED);
+            botaoVisualizar.setPreferredSize(new Dimension(140, 25));
+            botaoMarcarEntregue.setPreferredSize(new Dimension(140, 25));
+            botaoCancelarPedido.setPreferredSize(new Dimension(140, 25));
+            botaoLimparPedidos.setPreferredSize(new Dimension(50,25));
             painelBotoes.add(botaoVisualizar, BorderLayout.WEST);
             painelBotoes.add(botaoCancelarPedido, BorderLayout.WEST);
             painelBotoes.add(botaoMarcarEntregue, BorderLayout.WEST);
-
+            painelBotoes.add(botaoLimparPedidos, BorderLayout.WEST);
 
         botaoVisualizar.addActionListener(new ActionListener() {
             @Override
@@ -463,6 +478,19 @@ public class InterfaceGrafica extends JFrame {
                     desenhaTelaAdmin();
                 }else{
                     JOptionPane.showMessageDialog(tela, "Selecione um pedido");
+                }
+            }
+        });
+
+        botaoLimparPedidos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int choice = JOptionPane.showConfirmDialog(null,
+                        "Tem certeza de que deseja excluir todos os pedidos?",
+                        "Confirmação de Exclusão", JOptionPane.YES_NO_OPTION);
+                if (choice == JOptionPane.YES_OPTION) {
+                    Dados.limparPedidos();
+                    desenhaTelaAdmin();
                 }
             }
         });
