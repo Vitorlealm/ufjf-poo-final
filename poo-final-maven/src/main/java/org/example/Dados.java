@@ -178,6 +178,17 @@ public class Dados {
         Dados.salvarEmDisco();
         System.out.println("Pedido cadastrado com sucesso: " + pedido.getId());
 
+        limparCarrinho(pedido);
+        System.out.println("Carrinho limpo após pedido feito");
+        salvarEmDisco();
+
+    }
+
+    public static void limparCarrinho(Pedido pedido){
+        List<Produto> listaProdutos = pedido.getListaProdutos();
+        for(int i = pedido.getListaProdutos().size()-1; i >= 0; i--){
+            listaProdutos.remove(i);
+        }
     }
 
     public static boolean autenticaUsuario(String email, String senha) throws UsuarioNaoEncontradoException {

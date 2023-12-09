@@ -82,7 +82,7 @@ public class InterfaceGrafica extends JFrame {
     public void desenhaLogin() {
 
         // Criação do painel
-        JPanel painel = new JPanel();
+        JPanel painel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         painel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         // Campos de entrada
@@ -111,6 +111,7 @@ public class InterfaceGrafica extends JFrame {
         tela.getContentPane().removeAll();
         tela.getContentPane().add(painel, BorderLayout.CENTER);
         tela.revalidate();
+        tela.setLocationRelativeTo( null );
         tela.repaint();
 
         // Adiciona ação ao botão "Login"
@@ -497,7 +498,7 @@ public class InterfaceGrafica extends JFrame {
         botaoLimparPedidos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int choice = JOptionPane.showConfirmDialog(null,
+                int choice = JOptionPane.showConfirmDialog(tela,
                         "Tem certeza de que deseja excluir todos os pedidos?",
                         "Confirmação de Exclusão", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.YES_OPTION) {
