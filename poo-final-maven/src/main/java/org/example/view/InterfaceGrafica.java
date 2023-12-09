@@ -439,7 +439,7 @@ public class InterfaceGrafica extends JFrame {
             JButton botaoMarcarEntregue = new JButton("Pedido entregue");
             JButton botaoCancelarPedido = new JButton("Cancelar pedido");
             JButton botaoLimparPedidos = new JButton("X");
-            botaoLimparPedidos.setBackground(Color.BLUE);
+            botaoLimparPedidos.setBackground(Color.RED);
             botaoVisualizar.setPreferredSize(new Dimension(140, 25));
             botaoMarcarEntregue.setPreferredSize(new Dimension(140, 25));
             botaoCancelarPedido.setPreferredSize(new Dimension(140, 25));
