@@ -203,6 +203,13 @@ public class InterfaceGrafica extends JFrame {
                 try{
                     if (campoNome.getText().equals("") || campoEmail.getText().equals("") || campoSenha.getText().equals("") || campoCPF.getText().equals("")|| campoEndereco.getText().equals(""))
                         throw new Exception("Algum campo obrigatorio nao está preenchido, preencha!");
+                    
+                    if(!Usuario.validarEmail(campoEmail.getText()))
+                        throw new Exception("Email Inválido");
+                    
+                    if(!Usuario.validarCPF(campoCPF.getText()))
+                        throw new Exception("CPF Inválido");
+                    
                     Dados.cadastrarUsuario(new Usuario(
                             campoNome.getText(),
                             campoEmail.getText(),
@@ -210,6 +217,7 @@ public class InterfaceGrafica extends JFrame {
                             campoCPF.getText(),
                             campoEndereco.getText()
                     ));
+                    
                     JOptionPane.showMessageDialog(tela, "Usuario cadastrado com sucesso!");
                 }
                 catch (Exception e){
@@ -447,7 +455,7 @@ public class InterfaceGrafica extends JFrame {
 
         JPanel painelBotoes = new JPanel();
             painelBotoes.setPreferredSize(new Dimension(WIDTH/2, 25));
-            JButton botaoVisualizar = new JButton("Visualizar pedido");
+            JButton botaoVisualizar = new JButton("Editar pedido");
             JButton botaoMarcarEntregue = new JButton("Pedido entregue");
             JButton botaoCancelarPedido = new JButton("Cancelar pedido");
             JButton botaoLimparPedidos = new JButton("X");
@@ -535,28 +543,34 @@ public class InterfaceGrafica extends JFrame {
 
         JPanel painelInput = new JPanel();
         painelInput.setLayout(new BoxLayout(painelInput, BoxLayout.Y_AXIS));
-        JLabel rotuloNome = new JLabel("Nome:");
+            
+        JLabel rotuloNome = new JLabel("Informações:");
             final JTextField campoNome = new JTextField(pedido.concatenaNomeProdutos());
             campoNome.setPreferredSize(new Dimension(WIDTH -150, 25));
             campoNome.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoNome.getPreferredSize().height));
+            
         JLabel rotuloEmail = new JLabel("Email:");
             final JTextField campoEmail = new JTextField(pedido.getClienteEmail());
             campoEmail.setPreferredSize(new Dimension(WIDTH -150, 25));
             campoEmail.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoEmail.getPreferredSize().height));
+            
         JLabel rotuloEndereco = new JLabel("Endereço:");
             final JTextField campoEndereco = new JTextField(pedido.getEnderecoEntrega());
             campoEndereco.setPreferredSize(new Dimension(WIDTH -150, 25));
             campoEndereco.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoEndereco.getPreferredSize().height));
+            
         JLabel rotuloValorTotal = new JLabel("Valor total:");
             JFormattedTextField campoValorTotal = new JFormattedTextField(NumberFormat.getNumberInstance());
             campoValorTotal.setValue(pedido.getValorTotal());
             campoValorTotal.setPreferredSize(new Dimension(WIDTH -150, 25));
             campoValorTotal.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoValorTotal.getPreferredSize().height));
             campoValorTotal.setEnabled(false);
+            
         JLabel rotuloData = new JLabel("Data:");
             final JTextField campoData = new JTextField(String.valueOf(pedido.getDataCriacao()));
             campoData.setPreferredSize(new Dimension(WIDTH -150, 25));
             campoData.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoEndereco.getPreferredSize().height));
+            
         JLabel rotuloStatus = new JLabel("Status:");
             final JTextField campoStatus = new JTextField(String.valueOf(pedido.getStatus()));
             campoStatus.setPreferredSize(new Dimension(WIDTH -150, 25));

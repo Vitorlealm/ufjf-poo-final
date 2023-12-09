@@ -36,5 +36,13 @@ public class Bebida extends Produto{
         return BigDecimal.valueOf(valorTotal).setScale(2, RoundingMode.HALF_UP);
 
     }
+    
+    @Override
+    public String toString() {
+        return "Bebida | " +
+                "Tipo: " + bebida + 
+                " " + tamanhoMl +
+                "ml ";
+    }
 
 }

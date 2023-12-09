@@ -48,16 +48,71 @@ public class Usuario {
         }
     }
 
-
-    public void setCpf(String cpf){
-        if(cpf.length() < 3){
-            System.err.println("Menor q tres");
+    public static boolean validarEmail(String email) {
+        int indiceArroba = email.indexOf('@');
+        
+        if (indiceArroba > 0 && indiceArroba < email.length() - 1) {
+            
+            int indicePonto = email.indexOf('.', indiceArroba);
+            if (indicePonto > indiceArroba && indicePonto < email.length() - 1) {
+                return true;
+            }
         }
-        else{
-            this.cpf = cpf;
-            System.out.println(this.cpf);
+        return false;
+    }
+    
+    public static boolean validarCPF(String cpf) {
+        
+        cpf = cpf.replaceAll("[^0-9]", "");
+        
+        if (cpf.length() != 11) {
+            return false;
+        }
+        
+        boolean digitosIguais = true;
+        for (int i = 1; i < cpf.length(); i++) {
+            if (cpf.charAt(i) != cpf.charAt(0)) {
+                digitosIguais = false;
+                break;
+            }
+        }
+        if (digitosIguais) {
+            return false;
+        }
+        
+        int soma = 0;
+        int resto;
+        for (int i = 0; i < 9; i++) {
+            soma += Character.getNumericValue(cpf.charAt(i)) * (10 - i);
+        }
+        
+        resto = soma % 11;
+        int digito1 = (resto < 2) ? 0 : (11 - resto);
+        
+        soma = 0;
+        for (int i = 0; i < 10; i++) {
+            soma += Character.getNumericValue(cpf.charAt(i)) * (11 - i);
+        }
+        
+        resto = soma % 11;
+        int digito2 = (resto < 2) ? 0 : (11 - resto);
+        
+        
+        return (Character.getNumericValue(cpf.charAt(9)) == digito1 &&
+                Character.getNumericValue(cpf.charAt(10)) == digito2);
+    }
+    
+    public static void main(String[] args) {
+        String cpf = "123.456.789-09"; 
+        boolean valido = validarCPF(cpf);
+        if (valido) {
+            System.out.println("CPF válido!");
+        } else {
+            System.out.println("CPF inválido!");
         }
     }
+
+    
 
     @Override
     public String toString() {
