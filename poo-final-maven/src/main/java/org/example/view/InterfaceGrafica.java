@@ -258,6 +258,16 @@ public class InterfaceGrafica extends JFrame {
         painel.setPreferredSize(new Dimension(WIDTH, HEIGHT - 50));
         painel.setLayout(new BoxLayout(painel, BoxLayout.X_AXIS));
         JButton botaoLogout = new JButton("Logout");
+        JButton botaoIniciarPedido = new JButton("Iniciar Pedido");
+        
+        botaoIniciarPedido.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                desenhaTelaFazerPedido();
+            }
+        });
+        
+
         botaoLogout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -269,6 +279,7 @@ public class InterfaceGrafica extends JFrame {
         painel.add(desenhaListaUsuarios(), BorderLayout.WEST);
         painel.add(desenhaPainelPedidos(), BorderLayout.EAST);
         painelPai.add(botaoLogout, BorderLayout.NORTH);
+        painelPai.add(botaoIniciarPedido, BorderLayout.NORTH);
         painelPai.add(painel);
 
         tela.getContentPane().removeAll();
@@ -631,7 +642,8 @@ public class InterfaceGrafica extends JFrame {
                 desenhaLogin();
             }
         });
-
+        
+        
         tabelaPedidos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -941,7 +953,11 @@ public class InterfaceGrafica extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if(!listaProdutosAux.isEmpty()) {
                     Dados.cadastrarPedido(new Pedido(Dados.getUsuarioLogado(), listaProdutosAux));
-                    desenhaTelaClientes();
+                    if(Dados.getUsuarioLogado().isAdmin())
+                        desenhaTelaAdmin();
+                    else{
+                        desenhaTelaClientes();
+                    }
                 }else{
                     JOptionPane.showMessageDialog(tela, "Adicione ao menos um item ao carrinho.");
                 }
