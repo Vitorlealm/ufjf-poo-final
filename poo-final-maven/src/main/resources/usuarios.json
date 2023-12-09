@@ -1,1 +1,1 @@
-[{"nome":"a","email":"a","senha":"a","cpf":"a","endereco":"","ativo":true,"admin":true},{"nome":"b","email":"b","senha":"b","cpf":"b","endereco":"b","ativo":true,"admin":false}]
+[{"nome":"admin","email":"admin@admin.com","senha":"admin","cpf":"00000000000","endereco":"","ativo":true,"admin":true}]
