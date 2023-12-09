@@ -969,7 +969,10 @@ public class InterfaceGrafica extends JFrame {
         botaoVoltar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                desenhaTelaClientes();
+                if (Dados.getUsuarioLogado().isAdmin())
+                    desenhaTelaAdmin();
+                else
+                    desenhaTelaClientes();
             }
         });
 

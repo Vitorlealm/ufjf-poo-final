@@ -181,7 +181,6 @@ public class Dados {
         limparCarrinho(pedido);
         System.out.println("Carrinho limpo após pedido feito");
         salvarEmDisco();
-
     }
 
     public static void limparCarrinho(Pedido pedido){
