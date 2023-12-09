@@ -17,6 +17,4 @@ public abstract class Produto {
     }
 
     public abstract BigDecimal calcularValorItem();
-
-
 }

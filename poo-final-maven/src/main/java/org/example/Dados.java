@@ -19,6 +19,8 @@ import static org.example.Dados.getIdPedidos;
 import static org.example.Dados.salvarEmDisco;
 import org.example.produtos.Produto;
 
+import javax.swing.*;
+
 public class Dados {
     public static List<Usuario> usuariosCadastrados = new ArrayList<>();
     private static List<Produto> produtosCadastrados = new ArrayList<>();
@@ -87,9 +89,19 @@ public class Dados {
     }
 
     public static void excluirUsuario(Usuario u) {
+        int qntAdms = 0;
+        for(int i=0; i < Dados.usuariosCadastrados.size(); i++) {
+            if (Dados.usuariosCadastrados.get(i).isAdmin())
+                qntAdms++;
+        }
+
+
         for(int i=0; i < Dados.usuariosCadastrados.size(); i++){
             if(Dados.usuariosCadastrados.get(i).getEmail().equalsIgnoreCase(u.getEmail())){
-                Dados.usuariosCadastrados.remove(i);
+                if (u.isAdmin() && qntAdms == 1)
+                    JOptionPane.showMessageDialog(null, "Não é possivel apagar o unico usuário ADM");
+                else
+                    Dados.usuariosCadastrados.remove(i);
             }
         }
         salvarEmDisco();
@@ -143,7 +155,12 @@ public class Dados {
                     pedido.setStatus("ENTREGUE");
                 }
                 else{
-                    pedido.setStatus("ANDAMENTO");
+                    int choice = JOptionPane.showConfirmDialog(null,
+                            "O Pedido já está marcado como entregue, tem certeza que deseja alterar o status deste pedido?",
+                            "Confirmação", JOptionPane.YES_NO_OPTION);
+                    if (choice == JOptionPane.YES_OPTION) {
+                        pedido.setStatus("ANDAMENTO");
+                    }
                 }
             }
         }
@@ -178,6 +195,16 @@ public class Dados {
         Dados.salvarEmDisco();
         System.out.println("Pedido cadastrado com sucesso: " + pedido.getId());
 
+        limparCarrinho(pedido);
+        salvarEmDisco();
+    }
+
+    public static void limparCarrinho(Pedido pedido){
+        List<Produto> listaProdutos = pedido.getListaProdutos();
+        for(int i = pedido.getListaProdutos().size()-1; i >= 0; i--){
+            listaProdutos.remove(i);
+        }
+        System.out.println("Carrinho limpo!");
     }
 
     public static boolean autenticaUsuario(String email, String senha) throws UsuarioNaoEncontradoException {

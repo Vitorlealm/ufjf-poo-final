@@ -82,7 +82,7 @@ public class InterfaceGrafica extends JFrame {
     public void desenhaLogin() {
 
         // Criação do painel
-        JPanel painel = new JPanel();
+        JPanel painel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         painel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         // Campos de entrada
@@ -111,6 +111,7 @@ public class InterfaceGrafica extends JFrame {
         tela.getContentPane().removeAll();
         tela.getContentPane().add(painel, BorderLayout.CENTER);
         tela.revalidate();
+        tela.setLocationRelativeTo( null );
         tela.repaint();
 
         // Adiciona ação ao botão "Login"
@@ -458,7 +459,8 @@ public class InterfaceGrafica extends JFrame {
             JButton botaoMarcarEntregue = new JButton("Pedido entregue");
             JButton botaoCancelarPedido = new JButton("Cancelar pedido");
             JButton botaoLimparPedidos = new JButton("X");
-            botaoLimparPedidos.setBackground(Color.RED);
+            botaoLimparPedidos.getFont().deriveFont(Font.BOLD);
+            botaoLimparPedidos.setForeground(Color.RED);
             botaoVisualizar.setPreferredSize(new Dimension(140, 25));
             botaoMarcarEntregue.setPreferredSize(new Dimension(140, 25));
             botaoCancelarPedido.setPreferredSize(new Dimension(140, 25));
@@ -495,6 +497,7 @@ public class InterfaceGrafica extends JFrame {
                 if(pedidoAux != null) {
                     Dados.cancelarPedido(pedidoAux);
                     desenhaTelaAdmin();
+                    pedidoAux = null;
                 }else{
                     JOptionPane.showMessageDialog(tela, "Selecione um pedido");
                 }
@@ -504,7 +507,7 @@ public class InterfaceGrafica extends JFrame {
         botaoLimparPedidos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int choice = JOptionPane.showConfirmDialog(null,
+                int choice = JOptionPane.showConfirmDialog(tela,
                         "Tem certeza de que deseja excluir todos os pedidos?",
                         "Confirmação de Exclusão", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.YES_OPTION) {
@@ -598,7 +601,7 @@ public class InterfaceGrafica extends JFrame {
             public void actionPerformed(ActionEvent event) {
                 try{
                     Dados.editarPedido(pedido.getId(), campoEmail.getText(), campoEndereco.getText(), (BigDecimal) campoValorTotal.getValue(),campoStatus.getText());
-                    JOptionPane.showMessageDialog(tela, "Usuario editado com sucesso!");
+                    JOptionPane.showMessageDialog(tela, "Pedido editado com sucesso!");
                 }
                 catch (Exception e){
                     JOptionPane.showMessageDialog(tela, e.getMessage());
@@ -923,7 +926,26 @@ public class InterfaceGrafica extends JFrame {
         painelBotoes.setPreferredSize(new Dimension(WIDTH/3, 25));
         JButton botaoRemoverItem = new JButton("Remover item");
         botaoRemoverItem.setPreferredSize(new Dimension(200, 25));
+        JButton botaoLimparCarrinho = new JButton("Limpar Carrinho");
+        botaoRemoverItem.setPreferredSize(new Dimension(200, 25));
         painelBotoes.add(botaoRemoverItem, BorderLayout.WEST);
+        painelBotoes.add(botaoLimparCarrinho, BorderLayout.WEST);
+
+        botaoLimparCarrinho.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int choice = JOptionPane.showConfirmDialog(tela,
+                        "Tem certeza de que deseja limpar o carrinho?",
+                        "Confirmação", JOptionPane.YES_NO_OPTION);
+                if (choice == JOptionPane.YES_OPTION) {
+                    for(int i = listaProdutosAux.size()-1; i >= 0; i--){
+                        listaProdutosAux.remove(i);
+                    }
+                    System.out.println("Carrinho limpo!");
+                    desenhaTelaFazerPedido();
+                }
+            }
+        });
 
         botaoRemoverItem.addActionListener(new ActionListener() {
             @Override
@@ -967,6 +989,7 @@ public class InterfaceGrafica extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if(!listaProdutosAux.isEmpty()) {
                     Dados.cadastrarPedido(new Pedido(Dados.getUsuarioLogado(), listaProdutosAux));
+                    JOptionPane.showMessageDialog(tela, "Pedido feito por usuário Admin, vá até o pedido e edite o endereço");
                     if(Dados.getUsuarioLogado().isAdmin())
                         desenhaTelaAdmin();
                     else{
@@ -981,7 +1004,12 @@ public class InterfaceGrafica extends JFrame {
         botaoVoltar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                desenhaTelaClientes();
+                if (Dados.getUsuarioLogado().isAdmin())
+                    desenhaTelaAdmin();
+                else
+                    desenhaTelaClientes();
+
+                System.out.println("Seu carrinho de compras continuará salvo :D");
             }
         });
 
