@@ -587,7 +587,7 @@ public class InterfaceGrafica extends JFrame {
             public void actionPerformed(ActionEvent event) {
                 try{
                     Dados.editarPedido(pedido.getId(), campoEmail.getText(), campoEndereco.getText(), (BigDecimal) campoValorTotal.getValue(),campoStatus.getText());
-                    JOptionPane.showMessageDialog(tela, "Usuario editado com sucesso!");
+                    JOptionPane.showMessageDialog(tela, "Pedido editado com sucesso!");
                 }
                 catch (Exception e){
                     JOptionPane.showMessageDialog(tela, e.getMessage());
@@ -975,6 +975,7 @@ public class InterfaceGrafica extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if(!listaProdutosAux.isEmpty()) {
                     Dados.cadastrarPedido(new Pedido(Dados.getUsuarioLogado(), listaProdutosAux));
+                    JOptionPane.showMessageDialog(tela, "Pedido feito por usuário Admin, vá até o pedido e edite o endereço");
                     if(Dados.getUsuarioLogado().isAdmin())
                         desenhaTelaAdmin();
                     else{
