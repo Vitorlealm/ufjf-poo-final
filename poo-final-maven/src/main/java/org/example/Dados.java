@@ -89,9 +89,19 @@ public class Dados {
     }
 
     public static void excluirUsuario(Usuario u) {
+        int qntAdms = 0;
+        for(int i=0; i < Dados.usuariosCadastrados.size(); i++) {
+            if (Dados.usuariosCadastrados.get(i).isAdmin())
+                qntAdms++;
+        }
+
+
         for(int i=0; i < Dados.usuariosCadastrados.size(); i++){
             if(Dados.usuariosCadastrados.get(i).getEmail().equalsIgnoreCase(u.getEmail())){
-                Dados.usuariosCadastrados.remove(i);
+                if (u.isAdmin() && qntAdms == 1)
+                    JOptionPane.showMessageDialog(null, "Não é possivel apagar o unico usuário ADM");
+                else
+                    Dados.usuariosCadastrados.remove(i);
             }
         }
         salvarEmDisco();
