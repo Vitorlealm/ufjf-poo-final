@@ -22,6 +22,14 @@ import org.example.produtos.Produto;
 import javax.swing.*;
 
 public class Dados {
+    /*
+    Integrante - Matrícula:
+
+    Davi Aires Lage – 201965023A
+    Vitor Leal de Oliveira Martins – 202276027
+    Bruno Nascimento Rodrigues – 202065114A
+     */
+
     public static List<Usuario> usuariosCadastrados = new ArrayList<>();
     private static List<Produto> produtosCadastrados = new ArrayList<>();
     public static List<Pedido> listaPedidos = new ArrayList<>();

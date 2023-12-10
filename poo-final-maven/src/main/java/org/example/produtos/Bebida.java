@@ -4,6 +4,13 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class Bebida extends Produto{
+    /*
+    Integrante - Matrícula:
+
+    Davi Aires Lage – 201965023A
+    Vitor Leal de Oliveira Martins – 202276027
+    Bruno Nascimento Rodrigues – 202065114A
+     */
 
     private int tamanhoMl;
     private String bebida;

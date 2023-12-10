@@ -8,6 +8,14 @@ import java.lang.reflect.Type;
 public class PropertyBasedInterfaceMarshal implements
         JsonDeserializer<Produto>, JsonSerializer<Produto> {
 
+    /*
+    Integrante - Matrícula:
+
+    Davi Aires Lage – 201965023A
+    Vitor Leal de Oliveira Martins – 202276027
+    Bruno Nascimento Rodrigues – 202065114A
+     */
+
     private static final String CLASS_META_KEY = "type";
 
     @Override

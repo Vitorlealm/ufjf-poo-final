@@ -11,6 +11,14 @@ import java.util.stream.Collectors;
 
 @Data
 public class Pedido {
+    /*
+    Integrante - Matrícula:
+
+    Davi Aires Lage – 201965023A
+    Vitor Leal de Oliveira Martins – 202276027
+    Bruno Nascimento Rodrigues – 202065114A
+     */
+
 
     private Long id;
     private String clienteEmail;

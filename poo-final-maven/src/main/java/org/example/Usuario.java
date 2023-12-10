@@ -7,6 +7,13 @@ import java.awt.event.MouseListener;
 
 @Data
 public class Usuario {
+    /*
+    Integrante - Matrícula:
+
+    Davi Aires Lage – 201965023A
+    Vitor Leal de Oliveira Martins – 202276027
+    Bruno Nascimento Rodrigues – 202065114A
+     */
 
     private String nome;
     private String email;

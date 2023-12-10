@@ -7,6 +7,13 @@ import java.math.RoundingMode;
 
 @Data
 public class Sorvete extends Produto {
+    /*
+    Integrante - Matrícula:
+
+    Davi Aires Lage – 201965023A
+    Vitor Leal de Oliveira Martins – 202276027
+    Bruno Nascimento Rodrigues – 202065114A
+     */
 
     private String tamanho;
     private String cobertura;
